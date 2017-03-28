@@ -1,8 +1,12 @@
+nivelDia1 = 22
+nivelDia2 = 283
+nivelDia3 = 294
+
 minimo :: Integer -> Integer -> Integer -> Integer
-minimo x y z = min (min x y) z
+minimo x y z = (min x y) `min` z
 
 maximo :: Integer -> Integer -> Integer -> Integer
-maximo x y z = max (max x y) z
+maximo x y z = (max x y) `max` z
 
 dispersion :: Integer -> Integer -> Integer -> Integer
 dispersion dia1 dia2 dia3 = (maximo dia1 dia2 dia3) - (minimo dia1 dia2 dia3)

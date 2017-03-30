@@ -1,8 +1,11 @@
 esMultiploDe :: Integer -> Integer -> Bool
-esMultiploDe = \x y -> (mod x y) == 0
+--esMultiploDe = \x y -> (mod x y) == 0
+esMultiploDe y = ((==0).mod y)
 
 esBisiesto :: Integer -> Bool
-esBisiesto anio = (esMultiploDe anio 400) || ((esMultiploDe anio 4) && (not (esMultiploDe anio 100)))
+esBisiesto anio =
+  (esMultiploDe anio) 400
+  || ((esMultiploDe anio) 4 && (not.(esMultiploDe anio)) 100)
 
 celsiusToFahr :: Fractional a => a -> a
 celsiusToFahr = \celsius -> celsius * (9/5) + 32

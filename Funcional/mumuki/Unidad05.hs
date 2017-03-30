@@ -1,3 +1,13 @@
+sumaDeDoblesSegun :: t -> t -> (t -> Int) -> Int
+sumaDeDoblesSegun var1 var2 f = ((2*).f) var1 + ((2*).f) var2
+
+---
+
+esPeorSegun :: Ord a => t -> t -> (t -> a) -> Bool
+esPeorSegun x y f = (f x) < (f y)
+
+---
+
 saludar :: String -> String
 saludar name = "Hola " ++ name
 

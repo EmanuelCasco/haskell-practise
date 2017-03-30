@@ -46,3 +46,6 @@ largoEsPar = (even.length)
 nombreCompleto :: String -> String -> String -> String
 nombreCompleto name lastname surname =
   name ++ " " ++ lastname ++ " " ++ surname
+
+dobleDelSiguiente :: Num a => a -> a
+dobleDelSiguiente = ((*2).(+1))

@@ -28,6 +28,9 @@ mitad = \x -> x / 2
 inversa :: Fractional a => a -> a
 inversa = \x -> 1 / x
 
+doble :: Num a => a -> a
+doble = (*2)
+
 triple :: Num a => a -> a
 triple = (*3)
 

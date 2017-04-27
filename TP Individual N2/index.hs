@@ -10,8 +10,6 @@ crecimientoArboreo = 45
 between :: Ord a => a -> a -> a -> Bool
 between x minimo maximo  = minimo < x && x < maximo
 
-calcularPromedio :: Float -> Float -> Float
-calcularPromedio prom = (/100).(*prom)
 ---
 
 esFrondoso :: Arbol -> Bool
@@ -24,7 +22,7 @@ esperanzaDeVida (Arbol _ _ _ vitalidad) =
 
 lluvia :: Float -> Arbol -> Arbol
 lluvia mm (Arbol nombre alto ancho vitalidad) =
-  Arbol nombre (alto + 1) ancho (vitalidad + calcularPromedio mm vitalidad)
+  Arbol nombre (alto + 1) ancho (vitalidad + mm * vitalidad / 100)
 
 granizo :: Arbol -> Arbol
 granizo (Arbol nombre alto ancho vitalidad) =

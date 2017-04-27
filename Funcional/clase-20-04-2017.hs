@@ -5,12 +5,12 @@ Por ejemplo, si tengo un auto con un tanque que tiene capacidad máxima 50 y 20 
 Resolverlo usando composición y aplicación parcial. Las funciones min o max pueden ser útiles.
 -}
 
-data Tanque = Tanque Int Int deriving Show
+data Tanque = UnTanque Int Int deriving Show
 
 
 cargarNafta :: Tanque -> Int -> Tanque
-cargarNafta (Tanque capacidadMaxima cargaActual) carga =
-  Tanque capacidadMaxima (calcularCargaTotal capacidadMaxima cargaActual carga)
+cargarNafta (UnTanque capacidadMaxima cargaActual) carga =
+  UnTanque capacidadMaxima (calcularCargaTotal capacidadMaxima cargaActual carga)
 
 calcularCargaTotal :: Int -> Int -> Int -> Int
 calcularCargaTotal capacidadMaxima cargaActual =

@@ -1,17 +1,12 @@
 module NightClubSpec where
 
-import NightClub
 import Test.Hspec
+import NightClub
 
 ---
 
-intersect :: Eq a => [a] -> [a] -> [a]
-intersect xs ys =  [x | x <- xs, any (==x) ys]
-
----
-
-main :: IO ()
-main = hspec $ do
+testAll :: IO ()
+testAll = hspec $ do
   describe "[Verificar puntos 1 y 2] " $ do
     it "Nombre de Rodri debe ser 'Rodri'" $ do
       (nombre rodri) `shouldBe` "Rodri"
@@ -37,21 +32,37 @@ main = hspec $ do
       reconocerAmigo marcos (reconocerAmigo marcos cristian) `shouldBe` reconocerAmigo marcos cristian
 
   describe "[Verificar punto 5] " $ do
-    it "Si Ana toma grogXD su resistencia baja a 0" $ do
-      resistencia (grogXD ana) `shouldBe` 0
-    it "Si Ana toma la jarraLoca su resistencia baja a 100 (-20)" $ do
-      resistencia (jarraLoca ana) `shouldBe` 100
-    it "Si Rodri toma klusener de Huevo disminuye se resistencia a 50 (-5)" $ do
-      resistencia (klusener "Huevo" rodri) `shouldBe` 50
-    it "Si Rodri toma klusener de Frutilla disminuye se resistencia a 50 (-8)" $ do
-      resistencia (klusener "Frutilla" rodri) `shouldBe` 47
-    it "Si Cristian toma una soda de fuerza 2 se le agrega 'errp' delante del nombre" $ do
-      nombre (soda 2 cristian) `shouldBe` "errpCristian"
-    it "Si Marcos toma una soda de fuerza 5 se le agrega 'errrrrp' delante del nombre" $ do
-      nombre (soda 5 marcos) `shouldBe` "errrrrpMarcos"
-    it "Si Anabela se rescata por 0 horas debería tener la misma resistencia" $ do
-      resistencia (rescatarse 0 ana) `shouldBe` 120
-    it "Si Anabela se rescata por 2 horas debería tener 100 de resistencia" $ do
-      resistencia (rescatarse 2 ana) `shouldBe` 100
-    it "Si Cristian se rescata por 4 horas debería tener 200 de resistencia" $ do
-      resistencia (rescatarse 4 cristian) `shouldBe` 200
+    it "Ana toma grogXD. Queda con resistencia 0" $ do
+      (resistencia.grogXD) ana `shouldBe` 0
+
+    it "Si Ana toma la jarraLoca. Marcos queda con resistencia 30 (-10)" $ do
+      (resistencia.head.amigos.jarraLoca) ana `shouldBe` 30
+    it "Marcos toma la jarraLoca. Queda con resistencia 30" $ do
+      (resistencia.jarraLoca) marcos `shouldBe` 30
+    it "Rodri toma la jarraLoca. Queda con resistencia 110" $ do
+      (resistencia.jarraLoca) rodri `shouldBe` 45
+
+    it "Si Ana toma klusener de Huevo disminuye se resistencia a 50 (-5)" $ do
+      (resistencia.(klusener "Huevo")) ana `shouldBe` 115
+    it "Si Ana toma klusener de Frutilla disminuye se resistencia a 50 (-8)" $ do
+      (resistencia.(klusener "Chocolate")) ana `shouldBe` 111
+
+    it "Si Cristian toma un tintico, queda con 2 de resistencia por no tener" $ do
+      (resistencia.tintico) cristian `shouldBe` 2
+    it "Ana toma un Tintico, pasa a 130 de resistencia (tiene 2 amigos)" $ do
+      (resistencia.tintico) ana `shouldBe` 130
+
+    it "Rodri toma una Soda de fuerza 2, queda con nombre 'errpRodri'" $ do
+      (nombre.(soda 2)) rodri `shouldBe` "errpRodri"
+    it "Ana toma una Soda de fuerza 10, queda con nombre 'errrrrrrrrrpAna'" $ do
+      (nombre.(soda 10)) ana `shouldBe` "errrrrrrrrrpAna"
+    it "Ana toma una Soda de fuerza 0, queda con nombre 'epAna'" $ do
+      (nombre.(soda 0)) ana `shouldBe` "epAna"
+
+  describe "[Verificar punto 6] " $ do
+    it "Si Ana se rescata por 0 horas debería tener la misma resistencia" $ do
+      (resistencia.(rescatarse 0)) ana `shouldBe` 120
+    it "Si Rodri se rescata por 5 horas debería tener 255 de resistencia" $ do
+      (resistencia.(rescatarse 5)) rodri `shouldBe` 255
+    it "Si Cristian se rescata por 1 horas debería tener 155 de resistencia" $ do
+      (resistencia.(rescatarse 1)) rodri `shouldBe` 155

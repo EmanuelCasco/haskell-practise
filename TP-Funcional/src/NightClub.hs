@@ -9,7 +9,7 @@ data Cliente = UnCliente {
 rodri = UnCliente "Rodri" 55 []
 marcos = UnCliente "Marcos" 40 [rodri]
 cristian = UnCliente "Cristian" 2 []
-ana = UnCliente "Anabela" 120 [marcos, rodri]
+ana = UnCliente "Ana" 120 [marcos, rodri]
 ema = UnCliente "Emanuel" 45 [cristian, rodri]
 
 nombre :: Cliente -> String
@@ -21,11 +21,15 @@ resistencia (UnCliente _ resistencia _) = resistencia
 amigos :: Cliente -> [Cliente]
 amigos (UnCliente _ _ amigos) = amigos
 
+---
+
 comoEsta :: Cliente -> String
 comoEsta cliente
   |  resistencia cliente > 50 = "fresco"
   |  (length.amigos) cliente > 1 = "piola"
   |  otherwise = "duro"
+
+---
 
 agregarAmigo :: Cliente -> Cliente -> Cliente
 agregarAmigo amigo (UnCliente nombre resistencia amigos) =
@@ -40,29 +44,32 @@ reconocerAmigo amigo cliente
   |  amigo `esAmigo` cliente = cliente
   |  otherwise = agregarAmigo amigo cliente
 
+---
 
-bajarResistencia x (UnCliente nombre resistencia amigos) =
-  UnCliente nombre (resistencia - x) amigos
+modificarResistencia function (UnCliente nombre resistencia amigos) =
+  UnCliente nombre (function resistencia) amigos
 
 grogXD :: Cliente -> Cliente
-grogXD cliente = bajarResistencia (resistencia cliente) cliente
+grogXD = modificarResistencia (*0)
 
 jarraLoca :: Cliente -> Cliente
-jarraLoca cliente = cliente
+jarraLoca cliente = modificarResistencia (flip (-) 10) cliente
 
 klusener :: String -> Cliente -> Cliente
-klusener gusto cliente = bajarResistencia (length gusto) cliente
+klusener gusto cliente = modificarResistencia (flip (-) (length gusto)) cliente
 
 tintico :: Cliente -> Cliente
-tintico (UnCliente nombre resistencia amigos) =
-  UnCliente nombre (resistencia - 10) (map (bajarResistencia 10) amigos)
+tintico cliente = modificarResistencia ((+) diferencia) cliente
+  where diferencia = ((5*).length.amigos) cliente
 
 soda :: Int -> Cliente -> Cliente
 soda n (UnCliente nombre resistencia amigos) =
-  UnCliente ("erp"++nombre) resistencia amigos
+  UnCliente ("e" ++ replicate n 'r' ++ "p" ++ nombre) resistencia amigos
+
+---
 
 rescatarse :: Int -> Cliente -> Cliente
-rescatarse horas (UnCliente nombre resistencia amigos)
-  | (<= 0) horas = UnCliente nombre resistencia amigos
-  | (>3) horas =  UnCliente nombre 200 amigos
-  | otherwise = UnCliente nombre 100 amigos
+rescatarse horas cliente
+  | (<= 0) horas = cliente
+  | (>3) horas =  modificarResistencia ((+) 200) cliente
+  | otherwise = modificarResistencia ((+) 100) cliente

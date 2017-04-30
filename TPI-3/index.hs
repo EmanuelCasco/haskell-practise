@@ -13,8 +13,7 @@ intersect :: Eq a => [a] -> [a] -> [a]
 intersect xs ys =  [x | x <- xs, x `elem` ys]
 
 createZone :: ((Int, Int),(Int, Int)) -> [(Int, Int)]
-createZone ((xi,yi), (xf,yf)) = [ (x,y) | x <- [-50..50], y <- [-50..50],
-                                          elem x [xi..xf], elem y [yi..yf] ]
+createZone ((xi,yi), (xf,yf)) = [ (x,y) | x <- [xi..xf], y <- [yi..yf] ]
 
 ---
 

@@ -20,12 +20,6 @@ createZone ((xi,yi), (xf,yf)) = [ (x,y) | x <- [xi..xf], y <- [yi..yf] ]
 zonaMaldita :: [(Int, Int)]
 zonaMaldita = createZone ((10,0), (16,6))
 
-recorridoDe :: Aventurero -> [(Int, Int)]
-recorridoDe (UnAventurero _ recorrido) = recorrido
-
-nombreDe :: Aventurero -> String
-nombreDe (UnAventurero nombre _) = nombre
-
 estaMaldito :: Aventurero -> Bool
 estaMaldito = (not.null) . intersect zonaMaldita . recorrido
 

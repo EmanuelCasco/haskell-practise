@@ -4,7 +4,10 @@ data Cliente = UnCliente {
   nombre :: String,
   resistencia :: Int,
   amigos :: [Cliente]
-} deriving (Show, Eq)
+} deriving Eq
+
+instance Show Cliente where
+  show cliente = show (nombre cliente) ++ " " ++ show (resistencia cliente)
 
 rodri = UnCliente "Rodri" 55 []
 marcos = UnCliente "Marcos" 40 [rodri]
@@ -36,26 +39,22 @@ reconocerAmigo amigo cliente
 
 ---
 
-modificarResistencia :: (Int -> Int) -> Cliente -> Cliente
-modificarResistencia function (UnCliente nombre resistencia amigos) =
-  UnCliente nombre (function resistencia) amigos
-
-modificarAmigos function (UnCliente nombre resistencia amigos) =
-  UnCliente nombre resistencia (map function amigos)
-
 grogXD :: Cliente -> Cliente
-grogXD = modificarResistencia (*0)
+grogXD (UnCliente nombre resistencia amigos) =
+  UnCliente nombre 0 amigos
 
 jarraLoca :: Cliente -> Cliente
-jarraLoca = modificarAmigos nuevaResistencia . nuevaResistencia
-  where nuevaResistencia = modificarResistencia (abs . (-) 10)
+jarraLoca (UnCliente nombre resistencia amigos) =
+  UnCliente nombre (resistencia - 10) (map function amigos)
+  where function = (\(UnCliente nombre resistencia amigos) -> UnCliente nombre (resistencia-10) amigos)
 
 klusener :: String -> Cliente -> Cliente
-klusener gusto = modificarResistencia (abs . (-) (length gusto))
+klusener gusto (UnCliente nombre resistencia amigos) =
+  UnCliente nombre (resistencia - (length gusto)) amigos
 
 tintico :: Cliente -> Cliente
-tintico cliente = modificarResistencia ((+) diferencia) cliente
-  where diferencia = ((5*).length.amigos) cliente
+tintico (UnCliente nombre resistencia amigos) =
+  UnCliente nombre (resistencia + 5 * (length amigos)) amigos
 
 soda :: Int -> Cliente -> Cliente
 soda n (UnCliente nombre resistencia amigos) =
@@ -64,7 +63,7 @@ soda n (UnCliente nombre resistencia amigos) =
 ---
 
 rescatarse :: Int -> Cliente -> Cliente
-rescatarse horas cliente
-  | (<= 0) horas = cliente
-  | (>3) horas =  modificarResistencia ((+) 200) cliente
-  | otherwise = modificarResistencia ((+) 100) cliente
+rescatarse horas (UnCliente nombre resistencia amigos)
+  | (<= 0) horas = UnCliente nombre resistencia amigos
+  | (>3) horas =  UnCliente nombre (resistencia + 200) amigos
+  | otherwise = UnCliente nombre (resistencia + 100) amigos

@@ -17,13 +17,13 @@ zonaMaldita = ((10,0),(16,6))
 between :: Ord a => a -> a -> a -> Bool
 between xi xf x = xi <= x && x <= xf
 
-pasoPorZona :: (Vector,Vector) -> Vector -> Bool
-pasoPorZona ((xi,yi),(xf,yf)) (x, y) =  between (xi,yi) (xf,yf) (x, y)
+perteneceAZona :: (Vector,Vector) -> Vector -> Bool
+perteneceAZona ((xi,yi),(xf,yf)) (x, y) =  between (xi,yi) (xf,yf) (x, y)
 
 ---
 
 estaMaldito :: Aventurero -> Bool
-estaMaldito =  any (pasoPorZona zonaMaldita) . recorrido
+estaMaldito =  any (perteneceAZona zonaMaldita) . recorrido
 
 nombresMalditos :: [Aventurero] -> [String]
 nombresMalditos = map nombre . filter estaMaldito

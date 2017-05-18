@@ -43,3 +43,24 @@ in foldl (+) (0 + 1 + 2) [3..5] -->
 
 factorial 0 = 1
 factorial n = n * factorial (n - 1)
+
+---map' & elem' = 
+elem' :: Eq a => a -> [a] -> Bool
+elem' _ [] = False
+elem' n (x:xs) | n == x = True | otherwise = elem' n xs
+
+map' :: (a->b) -> [a] -> [b]
+map' f [] = []
+map' f (x:xs) = (f $ x) : map' f xs
+
+any' :: (a->Bool) -> [a] -> Bool
+any' f [] = False
+any' f (x:xs) | f x = True | otherwise = any' f xs
+
+--primerosPares numero  
+primerosPares n = take n . filter even
+
+primerosPares2 n = take n . pares
+pares (x:xs)
+    |  even x = x : pares xs
+    |  otherwise =  pares xs

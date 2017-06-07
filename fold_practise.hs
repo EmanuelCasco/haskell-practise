@@ -45,22 +45,25 @@ factorial 0 = 1
 factorial n = n * factorial (n - 1)
 
 ---map' & elem' = 
+
+--length, maximum , minimum, elem, map any
+---FOLDL
 elem' :: Eq a => a -> [a] -> Bool
+elem' n (x:xs) = n == x || elem' n xs
 elem' _ [] = False
-elem' n (x:xs) | n == x = True | otherwise = elem' n xs
 
 map' :: (a->b) -> [a] -> [b]
-map' f [] = []
-map' f (x:xs) = (f $ x) : map' f xs
+map' f (x:xs) = f x : map' f xs
+map' _ [] = []
 
 any' :: (a->Bool) -> [a] -> Bool
-any' f [] = False
-any' f (x:xs) | f x = True | otherwise = any' f xs
+any' f (x:xs) = f x || any' f xs
+any' _ [] = False
+
+last' :: [a] -> a
+last' [x] = x
+last' (x:xs) = last' xs
+last' [] = error "Vacia"
 
 --primerosPares numero  
-primerosPares n = take n . filter even
-
-primerosPares2 n = take n . pares
-pares (x:xs)
-    |  even x = x : pares xs
-    |  otherwise =  pares xs
+primerosPares n = take n (filter even [0..(2*n)])
